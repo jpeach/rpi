@@ -14,6 +14,8 @@ $(Buildroot_Archive):
 $(Buildroot_Archive).sha1:
 	@echo $(Buildroot_SHA1) $(Buildroot_Archive) > $@
 
-buildroot: archives/.buildroot
-	$(MKDIR_P) build/buildroot
+buildroot: build/buildroot/Config.in
+
+build/buildroot/Config.in: archives/.buildroot
+	$(MKDIR_P) $(dir $@)
 	$(TAR) --directory=build/buildroot --strip-components=1 -xf $(Buildroot_Archive)
