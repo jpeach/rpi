@@ -29,3 +29,4 @@ fetch:: ## Fetch archives
 fetch:: skel
 
 include mk.d/buildroot.mk
+include mk.d/sysimage.mk
