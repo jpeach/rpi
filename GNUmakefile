@@ -21,8 +21,11 @@ skel: $(Skeleton_Dirs)
 $(Skeleton_Dirs):
 	@$(MKDIR_P) $@
 
-distclean: ## Clean all files
+distclean: ## Clean all files (including archives)
 	@$(RM_F) $(Skeleton_Dirs)
+
+clean: ## Clean build files
+	@$(RM_F) build
 
 fetch:: ## Fetch archives
 
