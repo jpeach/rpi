@@ -34,3 +34,9 @@ $ make savedefconfig BR2_DEFCONFIG=/home/jpeach/src/rpi/board/rpi4/defconfig
 
 Once this is done, and there is a local [defconfig](./board/rpi4/defconfig),
 you can do `make sysimage-menuconfig` to update it using the Buildroot UI
+
+The system image is saved to `build/sysimage/images`, and you can copy
+it to a SD card with dd:
+```
+$ sudo dd if=build/sysimage/images/sdcard.img of=/dev/mmcblk0
+```
