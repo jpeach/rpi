@@ -31,3 +31,6 @@ current config, use `savedefconfig`, like this:
 ```
 $ make savedefconfig BR2_DEFCONFIG=/home/jpeach/src/rpi/board/rpi4/defconfig
 ```
+
+Once this is done, and there is a local [defconfig](./board/rpi4/defconfig),
+you can do `make sysimage-menuconfig` to update it using the Buildroot UI
