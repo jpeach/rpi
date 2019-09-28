@@ -14,6 +14,7 @@ $(Buildroot_Archive):
 $(Buildroot_Archive).sha1:
 	@echo $(Buildroot_SHA1) $(Buildroot_Archive) > $@
 
+buildroot: ## Fetch and prepare buildroot
 buildroot: build/buildroot/Config.in
 
 build/buildroot/Config.in: Systemd_Pkg := build/buildroot/package/systemd

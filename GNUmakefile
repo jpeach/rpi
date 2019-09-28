@@ -29,10 +29,6 @@ distclean: ## Clean all files (including archives)
 clean: ## Clean build files
 	@$(RM_F) build
 
-fetch:: ## Fetch archives
-
-fetch:: skel
-
 include mk.d/buildroot.mk
 include mk.d/sysimage.mk
 include mk.d/ssh.mk

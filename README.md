@@ -1,6 +1,19 @@
 # rpi-config
 Raspberry Pi PicoCluster config
 
+## Quickstart
+This repository contains some [Buildroot](https://www.buildroot.org)
+wrappers to generate a Raspberry Pi 4 boot image. The image will have
+DHCP enabled and will create an "admin" user with ssh and sudo access.
+
+Building the image:
+```
+$ make buildroot sysimage
+```
+
+Once this completes, dd the `sdcard.img` file from `build/sysimage/images`
+onto a SD card and stick it into the Taspberry Pi slot.
+
 ## Creating a Buildroot config
 
 Start out with a new [Buildroot](https://www.buildroot.org) clone:
@@ -59,4 +72,3 @@ $ sudo dd if=build/sysimage/images/sdcard.img of=/dev/mmcblk0
   the SD card (32G in my case), however trying to generate a large image
   causes OOM errors and kernel oops on my dev host. Need to investigate
   how to repartition the device and resize the image after the fact.
-
