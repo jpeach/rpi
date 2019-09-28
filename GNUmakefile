@@ -16,8 +16,7 @@ SED := sed
 
 Skeleton_Dirs := \
 	archives \
-	build \
-	config
+	build
 
 skel: $(Skeleton_Dirs)
 $(Skeleton_Dirs):

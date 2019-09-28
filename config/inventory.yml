@@ -1,0 +1,14 @@
+# rpi cluster ansible inventory.
+
+all:
+  hosts:
+    rp0.jpeach.org:
+    rp1.jpeach.org:
+    rp2.jpeach.org:
+    rp3.jpeach.org:
+    rp4.jpeach.org:
+  vars:
+    ansible_connection: ssh
+    ansible_user: admin
+
+# vim: set sw=2 ts=2 sts=2 et:

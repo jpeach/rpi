@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+
+readonly ROOT_DIR=$(cd $(dirname $0) && pwd)
+
+exec ansible all -i ${ROOT_DIR}/inventory.yml -m raw -a "$*"
