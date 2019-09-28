@@ -40,3 +40,23 @@ it to a SD card with dd:
 ```
 $ sudo dd if=build/sysimage/images/sdcard.img of=/dev/mmcblk0
 ```
+
+## Issues and Workarounds
+
+* [#12784](https://github.com/systemd/systemd/issues/12784)
+  systemd fails to bring up network interfaces on kernel >= 5.2. Manual
+  workaround is to bring up the interface on the console, i.e. `ip link
+  set eth0 up`. Fixed in systemd 243.
+* Some GNU packages (e.g. findutils) will fail to build without
+  `makeinfo`. This can be fixed by installing the `textinfo` package on
+  the host.
+* systemd-hostnamed can set the hostname from the DHCP response, but this
+  will only work if you build against
+  [polkit](https://gitlab.freedesktop.org/polkit/polkit/). If you omit
+  this, systemd-networkd will log a "Permission denied" error when it
+  tries to set the hostname.
+* Root filesystem size. Ideally we want the root filesystem to fill
+  the SD card (32G in my case), however trying to generate a large image
+  causes OOM errors and kernel oops on my dev host. Need to investigate
+  how to repartition the device and resize the image after the fact.
+

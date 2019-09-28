@@ -1,0 +1,3 @@
+/home/admin r 0700 admin admin - - - - -
+/home/admin/.ssh d 0700 admin admin - - - - -
+/home/admin/.ssh/authorized_keys f 0644 admin admin - - - - -

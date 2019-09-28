@@ -6,9 +6,8 @@ Sysimage_Buildroot_Make = \
 	O=$$(pwd)/build/sysimage \
 	-C build/buildroot
 
-
 sysimage: ## Build the system install image
-sysimage: build/sysimage/.config
+sysimage: build/sysimage/.config $(SSH_Root_Privkey) $(SSH_Root_Pubkey)
 	$(Sysimage_Buildroot_Make)
 	@echo Built image in build/sysimage/images
 

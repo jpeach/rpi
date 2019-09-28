@@ -12,10 +12,12 @@ CURL := curl --progress-bar --location
 MKDIR_P := mkdir -p
 RM_F := rm -rf
 TAR := tar
+SED := sed
 
 Skeleton_Dirs := \
 	archives \
-	build
+	build \
+	config
 
 skel: $(Skeleton_Dirs)
 $(Skeleton_Dirs):
@@ -33,3 +35,4 @@ fetch:: skel
 
 include mk.d/buildroot.mk
 include mk.d/sysimage.mk
+include mk.d/ssh.mk
