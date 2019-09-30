@@ -54,6 +54,12 @@ it to a SD card with dd:
 $ sudo dd if=build/sysimage/images/sdcard.img of=/dev/mmcblk0
 ```
 
+Rather that just using the image directly, you can use the
+[copy-image.sh](board/rpi4/copy-image.sh), which will copy the image,
+then resize the foot filesystem to fill the remainder of the SD card
+device. This is useful for larger devices, since generating 32G images
+with genimage tends to OOM the build host.
+
 ## Issues and Workarounds
 
 * [#12784](https://github.com/systemd/systemd/issues/12784)
