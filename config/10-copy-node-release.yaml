@@ -1,0 +1,59 @@
+---
+# This playbook copies the Kubernetes node release binaries to all the target nodes.
+- hosts: all
+  gather_facts: false
+
+  vars:
+    release: "v1.16.0"
+    sha512sum: "8b084c1063beda2dd4000e8004634d82e580f05cc300c2ee13ad84bb884987b2c7fd1f033fb2ed46941dfc311249acef06efe5044fb72dc4b6089c66388e1f61"
+    tarball: "kubernetes-node-linux-arm.tar.gz"
+    binaries:
+      - kube-proxy
+      - kubeadm
+      - kubectl
+      - kubelet
+
+  tasks:
+
+  - name: Fetch Kubernetes node release
+    run_once: true
+    delegate_to: localhost
+    get_url:
+      url: "https://dl.k8s.io/{{release}}/{{tarball}}"
+      dest: "./{{tarball}}"
+      checksum: "sha512:{{sha512sum}}"
+
+  - name: Extract Kubernetes node release
+    run_once: true
+    delegate_to: localhost
+    command: "tar --strip-components 3 -xf {{tarball}} kubernetes/node/bin"
+    args:
+      warn: false
+
+  - name: Copy Kubernetes binaries to target
+    delegate_to: localhost
+    command: "rsync -a -zz {{item}} {{ansible_user}}@{{inventory_hostname}}:~"
+    with_items: "{{binaries}}"
+
+  - name: Create Kubernetes {{release}} install directory on target
+    raw: "sudo mkdir -p /opt/k/{{release}}/bin"
+
+  - name: Install Kubernetes binaries on target
+    raw: "sudo mv {{item}} /opt/k/{{release}}/bin"
+    with_items: "{{binaries}}"
+
+  - name: Ensure Kubernetes binaries ownership on target
+    raw: "sudo chown -R root:root /opt/k/{{release}}/bin"
+
+  - name: Install Kubernetes binary symlinks on target
+    raw: "sudo ln -sf /opt/k/{{release}}/bin/{{item}} /usr/sbin/{{item}}"
+    with_items: "{{binaries}}"
+
+  - name: Removing local intermediate files
+    run_once: true
+    delegate_to: localhost
+    command: rm -f {{binaries}} {{tarball}}
+    args:
+      warn: false
+
+# vim: set sw=2 ts=2 sts=2 et:
