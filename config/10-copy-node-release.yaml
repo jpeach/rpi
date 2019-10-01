@@ -52,7 +52,10 @@
   - name: Removing local intermediate files
     run_once: true
     delegate_to: localhost
-    command: rm -f {{binaries}} {{tarball}}
+    command: rm -f {{item}}
+    with_items:
+      - "{{binaries}}"
+      - "{{tarball}}"
     args:
       warn: false
 
