@@ -2,8 +2,6 @@ Buildroot_Version := 2019.08
 Buildroot_Archive := archives/buildroot-$(Buildroot_Version).tar.bz2
 Buildroot_SHA1 := ae463c4fd8b61119bdc0b548afc7a04690714da6
 
-fetch:: archives/.buildroot
-
 archives/.buildroot: $(Buildroot_Archive) $(Buildroot_Archive).sha1
 	@sha1sum --check $(Buildroot_Archive).sha1
 	@touch $@
@@ -15,7 +13,7 @@ $(Buildroot_Archive).sha1:
 	@echo $(Buildroot_SHA1) $(Buildroot_Archive) > $@
 
 buildroot: ## Fetch and prepare buildroot
-buildroot: build/buildroot/Config.in
+buildroot: archives/.buildroot build/buildroot/Config.in
 
 build/buildroot/Config.in: Systemd_Pkg := build/buildroot/package/systemd
 build/buildroot/Config.in: archives/.buildroot
