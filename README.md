@@ -78,3 +78,6 @@ with genimage tends to OOM the build host.
   the SD card (32G in my case), however trying to generate a large image
   causes OOM errors and kernel oops on my dev host. Need to investigate
   how to repartition the device and resize the image after the fact.
+* rsync protocol mismatch. macOS 10.14.16 has rsync 2.6.9, which
+  appears to not be compatible with the modern 3.1.3 when compression
+  is enabled. The error message you get is `rsync: This rsync lacks old-style --compress due to its external zlib.  Try -zz.`. Upgrading to the Homebrew version of rsync and using `-zz` fixes this.
