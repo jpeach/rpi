@@ -3,6 +3,7 @@ Sysimage_Buildroot_Make = \
 	$(MAKE) \
 	BR2_DL_DIR=$$(pwd)/archives \
 	BR2_DEFCONFIG=$$(pwd)/$(Sysimage_Defconfig) \
+	BR2_EXTERNAL=$$(pwd)/board/packages \
 	O=$$(pwd)/build/sysimage \
 	-C build/buildroot
 
