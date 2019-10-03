@@ -81,3 +81,8 @@ with genimage tends to OOM the build host.
 * rsync protocol mismatch. macOS 10.14.16 has rsync 2.6.9, which
   appears to not be compatible with the modern 3.1.3 when compression
   is enabled. The error message you get is `rsync: This rsync lacks old-style --compress due to its external zlib.  Try -zz.`. Upgrading to the Homebrew version of rsync and using `-zz` fixes this.
+* If the host Go toolchain fails to link with an error line `relocation target
+  pthread_mutex_unlock not defined for ABI0`, then this may be
+  [#31912](https://github.com/golang/go/issues/31912), in which case switching
+  aways from linking with lld may avoid the problem.
+
