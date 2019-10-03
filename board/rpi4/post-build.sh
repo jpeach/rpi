@@ -3,17 +3,20 @@
 # ROOT_DIR is the root of this git repo.
 ROOT_DIR=$(cd $(dirname $0)/../.. && pwd)
 
-# Enable systemd-networkd for DHCP client.
-ln --symbolic --target-directory ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants \
-    ../../../../lib/systemd/system/systemd-networkd.service
+readonly -a SYSTEMD_SERVICES=(
+    "systemd-networkd.service"
+    "systemd-resolved.service"
+    "sshd.service"
+    "containerd.service"
+)
 
-# Enable systemd-resolved to set up DNS resolver from DHCP.
-ln --symbolic --target-directory ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants \
-    ../../../../lib/systemd/system/systemd-resolved.service
-
-# Enable sshd service.
-ln --symbolic --target-directory ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants \
-    ../../../../lib/systemd/system/sshd.service
+# Enable wanted systemd services.
+for s in ${SYSTEMD_SERVICES[@]}; do
+    if [ -r ${TARGET_DIR}/usr/lib/systemd/system/${s} ]; then
+        ln --force --symbolic --target-directory ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants \
+            ../../../../lib/systemd/system/${s}
+    fi
+done
 
 # Disable NFS for now (until we can network boot).
 rm -rf ${TARGET_DIR}/etc/systemd/system/multi-user.target.wants/nfs-*
