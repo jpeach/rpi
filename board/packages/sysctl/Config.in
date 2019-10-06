@@ -1,0 +1,4 @@
+config BR2_PACKAGE_SYSCTL
+	bool "sysctl"
+        help
+          Install Kubernetes required sysctl configuration.

@@ -1,3 +1,4 @@
 menu "Kubernetes Dependencies"
     source "$BR2_EXTERNAL_RPI_PATH/containerd/Config.in"
+    source "$BR2_EXTERNAL_RPI_PATH/sysctl/Config.in"
 endmenu
