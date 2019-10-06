@@ -2,6 +2,11 @@
 Description=containerd container runtime
 Documentation=https://containerd.io
 
+# containerd needs the network available, otherwise the CRI plugin will
+# fail to start because there is no default route.
+After=network-online.target
+Wants=network-online.target
+
 [Service]
 EnvironmentFile=-/etc/sysconfig/containerd
 Environment=GOTRACEBACK=crash
