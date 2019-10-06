@@ -47,7 +47,7 @@ define CONTAINERD_INSTALL_TARGET_CMDS
 endef
 
 define CONTAINERD_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -Dm755 \
+	$(INSTALL) -Dm644 \
 		$(CONTAINERD_PKGDIR)/containerd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/containerd.service
 	$(call link-service,containerd.service)
