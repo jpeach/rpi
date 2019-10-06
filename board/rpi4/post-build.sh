@@ -1,5 +1,23 @@
 #! /usr/bin/env bash
 
+# Set additional kernel commandline options.
+readonly -a KERNEL_CMDLINE_OPTS=(
+    "cgroup_enable=memory"
+)
+
+readonly KERNEL_CMDLINE="${BINARIES_DIR}/rpi-firmware/cmdline.txt"
+readonly KERNEL_CMDLINE_TMP=$(mktemp "${KERNEL_CMDLINE}.XXXX")
+
+for opt in ${KERNEL_CMDLINE_OPTS[@]}; do
+    if ! grep --fixed-strings --quiet ${opt} ${KERNEL_CMDLINE} ; then
+        echo Adding \"${opt}\" to ${KERNEL_CMDLINE}
+        echo " ${opt}" >> ${KERNEL_CMDLINE}
+    fi
+done
+
+tr --squeeze-repeats '\n' ' ' < ${KERNEL_CMDLINE} > ${KERNEL_CMDLINE_TMP}
+mv ${KERNEL_CMDLINE_TMP} ${KERNEL_CMDLINE}
+
 # ROOT_DIR is the root of this git repo.
 ROOT_DIR=$(cd $(dirname $0)/../.. && pwd)
 
