@@ -1,0 +1,67 @@
+---
+# This playbook copies the Kubernetes critools release binaries to all the target nodes.
+- hosts: all
+  gather_facts: false
+
+  vars:
+    release: "v1.16.1"
+    sha256sum: "367826f3eb06c4d923f3174d23141ddacef9ffcb0c902502bd922dbad86d08dd"
+    tarball: "crictl-linux-arm.tar.gz"
+    binaries:
+      - crictl
+
+  tasks:
+
+  - name: Fetch Kubernetes CRI tools release
+    run_once: true
+    delegate_to: localhost
+    get_url:
+      url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{release}}/crictl-{{release}}-linux-arm.tar.gz"
+      dest: "./{{tarball}}"
+      checksum: "sha256:{{sha256sum}}"
+
+  - name: Extract Kubernetes CRI tools release
+    run_once: true
+    delegate_to: localhost
+    command: "tar -xf {{tarball}}"
+    args:
+      warn: false
+
+  - name: Copy Kubernetes binaries to target
+    delegate_to: localhost
+    command: "rsync -a -zz {{item}} {{ansible_user}}@{{inventory_hostname}}:~"
+    with_items: "{{binaries}}"
+
+  - name: Create Kubernetes {{release}} install directory on target
+    raw: "sudo mkdir -p /opt/k/{{release}}/bin"
+
+  - name: Install Kubernetes binaries on target
+    raw: "sudo mv {{item}} /opt/k/{{release}}/bin"
+    with_items: "{{binaries}}"
+
+  - name: Ensure Kubernetes binaries ownership on target
+    raw: "sudo chown -R root:root /opt/k/{{release}}/bin"
+
+  - name: Install Kubernetes binary symlinks on target
+    raw: "sudo ln -sf /opt/k/{{release}}/bin/{{item}} /usr/sbin/{{item}}"
+    with_items: "{{binaries}}"
+
+  - name: Setting crictl configuration
+    raw: "sudo crictl config {{item}}"
+    with_items:
+      - "runtime-endpoint unix:///run/containerd/containerd.sock"
+      - "image-endpoint unix:///run/containerd/containerd.sock"
+      - "timeout 10"
+
+  - name: Removing local intermediate files
+    run_once: true
+    delegate_to: localhost
+    command: rm -f {{item}}
+    with_items:
+      - "{{binaries}}"
+      - "{{tarball}}"
+    args:
+      warn: false
+
+# vim: set sw=2 ts=2 sts=2 et:
+
