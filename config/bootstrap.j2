@@ -1,0 +1,3 @@
+{% for k in components.keys() %}
+{{ components[k] | to_nice_yaml(explicit_start=True,indent=2) }}
+{% endfor %}
