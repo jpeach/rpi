@@ -3,6 +3,7 @@
 # Set additional kernel commandline options.
 readonly -a KERNEL_CMDLINE_OPTS=(
     "cgroup_enable=memory"
+    "systemd.unified_cgroup_hierarchy=false"
 )
 
 readonly KERNEL_CMDLINE="${BINARIES_DIR}/rpi-firmware/cmdline.txt"

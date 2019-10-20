@@ -88,4 +88,7 @@ with genimage tends to OOM the build host.
 * The cgroupv1 memory controller is disabled by default in Raspberry Pi
   kernels, see (#1950)[https://github.com/raspberrypi/linux/issues/1950].
   The fix is to add `cgroup_enable=memory` to the kernel command line.
-
+* The systemd build defaults to only configuring the unified cgroupv2
+  hierarchy. When this happens, the kubelet won't start because it can't
+  find the cgroups mount point. The workaround is to boot with
+  `systemd.unified_cgroup_hierarchy` on the kernel commandline.
