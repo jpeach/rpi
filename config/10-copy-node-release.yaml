@@ -59,4 +59,17 @@
     args:
       warn: false
 
+  - name: Copy Kubelet systemd service to target
+    delegate_to: localhost
+    command: "rsync -a -zz {{item}} {{ansible_user}}@{{inventory_hostname}}:~"
+    with_items: "{{playbook_dir}}/kubelet.service"
+
+  - name: Install Kubelet systemd service on target
+    raw: "sudo {{item}}"
+    with_items:
+      - "mv kubelet.service /etc/systemd/system"
+      - "chown root:root /etc/systemd/system/kubelet.service"
+      - "systemctl daemon-reload"
+      - "systemctl enable kubelet"
+
 # vim: set sw=2 ts=2 sts=2 et:

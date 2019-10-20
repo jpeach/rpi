@@ -1,0 +1,23 @@
+# Initial kubelet service, based on
+# https://github.com/kubernetes/kubernetes/blob/master/build/debs/kubelet.service
+
+[Unit]
+Description=kubelet: The Kubernetes Node Agent
+Documentation=http://kubernetes.io/docs/
+
+[Service]
+# Kubeadm generates this flags file.
+EnvironmentFile=/var/lib/kubelet/kubeadm-flags.env
+
+# Kubeadm generates both kubelet.conf and config.yaml.
+ExecStart=/usr/sbin/kubelet \
+  --kubeconfig=/etc/kubernetes/kubelet.conf \
+  --config=/var/lib/kubelet/config.yaml \
+  $KUBELET_KUBEADM_ARGS
+
+Restart=always
+StartLimitInterval=0
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
