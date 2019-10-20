@@ -6,7 +6,7 @@
   vars:
     release: "v1.16.1"
     sha256sum: "367826f3eb06c4d923f3174d23141ddacef9ffcb0c902502bd922dbad86d08dd"
-    tarball: "crictl-linux-arm.tar.gz"
+    archive: "{{playbook_dir}}/../archives/crictl-{{release}}-linux-arm.tar.gz"
     binaries:
       - crictl
 
@@ -17,13 +17,13 @@
     delegate_to: localhost
     get_url:
       url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{release}}/crictl-{{release}}-linux-arm.tar.gz"
-      dest: "./{{tarball}}"
+      dest: "{{archive}}"
       checksum: "sha256:{{sha256sum}}"
 
   - name: Extract Kubernetes CRI tools release
     run_once: true
     delegate_to: localhost
-    command: "tar -xf {{tarball}}"
+    command: "tar -xf {{archive}}"
     args:
       warn: false
 
@@ -59,7 +59,6 @@
     command: rm -f {{item}}
     with_items:
       - "{{binaries}}"
-      - "{{tarball}}"
     args:
       warn: false
 

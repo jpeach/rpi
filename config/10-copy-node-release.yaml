@@ -6,7 +6,7 @@
   vars:
     release: "v1.16.0"
     sha512sum: "8b084c1063beda2dd4000e8004634d82e580f05cc300c2ee13ad84bb884987b2c7fd1f033fb2ed46941dfc311249acef06efe5044fb72dc4b6089c66388e1f61"
-    tarball: "kubernetes-node-linux-arm.tar.gz"
+    archive: "{{playbook_dir}}/../archives/kubernetes-node-{{release}}-linux-arm.tar.gz"
     binaries:
       - kube-proxy
       - kubeadm
@@ -19,14 +19,14 @@
     run_once: true
     delegate_to: localhost
     get_url:
-      url: "https://dl.k8s.io/{{release}}/{{tarball}}"
-      dest: "./{{tarball}}"
+      url: "https://dl.k8s.io/{{release}}/kubernetes-node-linux-arm.tar.gz"
+      dest: "{{archive}}"
       checksum: "sha512:{{sha512sum}}"
 
   - name: Extract Kubernetes node release
     run_once: true
     delegate_to: localhost
-    command: "tar --strip-components 3 -xf {{tarball}} kubernetes/node/bin"
+    command: "tar --strip-components 3 -xf {{archive}} kubernetes/node/bin"
     args:
       warn: false
 
@@ -55,7 +55,6 @@
     command: rm -f {{item}}
     with_items:
       - "{{binaries}}"
-      - "{{tarball}}"
     args:
       warn: false
 
