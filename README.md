@@ -92,3 +92,14 @@ with genimage tends to OOM the build host.
   hierarchy. When this happens, the kubelet won't start because it can't
   find the cgroups mount point. The workaround is to boot with
   `systemd.unified_cgroup_hierarchy` on the kernel commandline.
+* The default `runc` build in Buildroot builds a static binary, which
+  disables the systemd cgroup driver. (I have a Buildroot patch pending).
+* Next is a weird interaction between `containerd` and `systemd` that results
+  in the following error:
+```
+Oct 21 09:03:22 rp0 containerd[235]: time="2019-10-21T09:03:22.778704843Z" level=error msg="StartContainer for \"29c5d82693a33e08992e2d094d4e27995eea050394b47571bb9c55f9adce8cd8\" failed" error="failed to create containerd task: OCI runtime create failed: container_linux.go:345: starting container process caused \"process_linux.go:430: container init caused \\\"process_linux.go:396: setting cgroup config for procHooks process caused \\\\\\\"failed to write 100000 to cpu.cfs_period_us: open /sys/fs/cgroup/cpu,cpuacct/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod74dea8da17aa6241e5e4f7b2ba4e1d8e.slice/cri-containerd-29c5d82693a33e08992e2d094d4e27995eea050394b47571bb9c55f9adce8cd8.scope/cpu.cfs_period_us: permission denied\\\\\\\"\\\"\": unknown"
+```
+* Raspberry Pi sshd bootup is super slow because it takes so long to
+  generate initial entropy (I think). Need to enable the systemd
+  entropy daemon thingy.
+
