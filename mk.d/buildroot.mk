@@ -16,6 +16,7 @@ buildroot: ## Fetch and prepare buildroot
 buildroot: archives/.buildroot build/buildroot/Config.in
 
 build/buildroot/Config.in: Systemd_Pkg := build/buildroot/package/systemd
+build/buildroot/Config.in: Runc_Pkg := build/buildroot/package/runc
 build/buildroot/Config.in: archives/.buildroot
 	$(MKDIR_P) $(dir $@)
 	$(TAR) --directory=build/buildroot --strip-components=1 -xf $(Buildroot_Archive)
@@ -26,3 +27,5 @@ build/buildroot/Config.in: archives/.buildroot
 	$(RM_F) $(Systemd_Pkg)/0002-Refuse-dbus-message-paths-longer-than-BUS_PATH_SIZE_.patch
 	$(RM_F) $(Systemd_Pkg)/0003-Allocate-temporary-strings-to-hold-dbus-paths-on-the.patch
 	$(RM_F) $(Systemd_Pkg)/0004-meson-drop-misplaced-Wl-undefined-argument.patch
+	# See https://github.com/opencontainers/runc/pull/2154
+	$(SED) --in-place '-es/static_build//' $(Runc_Pkg)/runc.mk
