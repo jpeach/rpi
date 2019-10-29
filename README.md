@@ -1,5 +1,5 @@
 # rpi-config
-Raspberry Pi PicoCluster config
+Raspberry Pi [PicoCluster](https://www.picocluster.com) config
 
 ## Quickstart
 This repository contains some [Buildroot](https://www.buildroot.org)
