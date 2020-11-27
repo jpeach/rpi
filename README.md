@@ -86,7 +86,7 @@ with genimage tends to OOM the build host.
   [#31912](https://github.com/golang/go/issues/31912), in which case switching
   aways from linking with lld may avoid the problem.
 * The cgroupv1 memory controller is disabled by default in Raspberry Pi
-  kernels, see (#1950)[https://github.com/raspberrypi/linux/issues/1950].
+  kernels, see [#1950](https://github.com/raspberrypi/linux/issues/1950).
   The fix is to add `cgroup_enable=memory` to the kernel command line.
 * The systemd build defaults to only configuring the unified cgroupv2
   hierarchy. When this happens, the kubelet won't start because it can't
